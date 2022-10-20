@@ -1,11 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
 import MoreButton from "./MoreButton";
+import Sushi from "./Sushi";
 
-function SushiContainer(props) {
+function SushiContainer({remainingSushi, handlePurchase, wallet}) {
+  const [toShow, setToShow]=useState([1, 4])
+  const sushiComponent = remainingSushi.map(roll=>{
+    if (roll.id >= toShow[0] && roll.id <= toShow[1]){
+      return <Sushi key={roll.id} roll={roll} handlePurchase={handlePurchase} wallet={wallet} />
+    }
+  })
+
+  function moreSushi(){
+    if (toShow[1]<100){
+      const newShow = toShow.map(num=>num+4)
+      setToShow(newShow)
+      console.log(toShow)
+  }
+  }
+
   return (
     <div className="belt">
-      {/* Render Sushi components here! */}
-      <MoreButton />
+      {sushiComponent}
+      <MoreButton moreSushi={moreSushi} />
     </div>
   );
 }
